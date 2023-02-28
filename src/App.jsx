@@ -1,9 +1,7 @@
-import { useState } from "react";
-
-const API_URL = "http://localhost:3000/api";
+import { useCards } from "./useCards";
 
 function App() {
-  const [cards, setCards] = useState([]);
+  const { cards, loading, addCard } = useCards();
 
   function handleCreateCard(event) {
     event.preventDefault();
@@ -14,23 +12,15 @@ function App() {
       description,
     };
 
-    fetch(`${API_URL}/cards`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newCard),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCards([...cards, data]);
-      });
+    addCard(newCard);
   }
 
   return (
     <div className="bg-neutral-700 w-full min-h-screen text-neutral-100">
       <div className="mx-auto w-full xl:w-3/6">
         <ul className="flex flex-col gap-2 bg-stone-800 p-10">
+          {loading && <p>Carregando...</p>}
+
           {cards.map((card) => (
             <li key={card.id} className="flex">
               <p className="flex-1">{card.description}</p>
