@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_URL = "http://localhost:3000/api";
+
 function App() {
   const [cards, setCards] = useState([]);
 
@@ -8,13 +10,21 @@ function App() {
 
     const description = event.target.elements.description.value;
 
-    setCards([
-      ...cards,
-      {
-        id: Date.now(),
-        description,
+    const newCard = {
+      description,
+    };
+
+    fetch(`${API_URL}/cards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+      body: JSON.stringify(newCard),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCards([...cards, data]);
+      });
   }
 
   return (

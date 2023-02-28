@@ -2,6 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
+import bodyParser from "body-parser";
+
+import { handleApiRequest } from "./handleApiRequest.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -56,6 +59,14 @@ export async function createServer(
       })
     );
   }
+
+  app.use(express.json());
+
+  app.use(bodyParser.json());
+
+  app.use("/api/*", (req, res) => {
+    handleApiRequest(req, res);
+  });
 
   app.use("*", async (req, res) => {
     try {
