@@ -23,7 +23,7 @@ function App() {
 
           {cards.map((card) => (
             <li key={card.id} className="flex">
-              <p className="flex-1">{card.description}</p>
+              <p className="flex-1 whitespace-pre-line">{card.description}</p>
 
               <button
                 className="bg-slate-500 border-solid border-x-2 border-slate-200 rounded-md p-2"
