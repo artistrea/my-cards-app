@@ -43,8 +43,6 @@ export function routeMatcher(method, route) {
       );
     }
 
-    console.log("curRoutes", curRoutes);
-
     throw new Error(
       `Some error happened at: ${apiRoute}\nFull route: ${route}`
     );

@@ -7,8 +7,6 @@ export const handleApiRequest = async (req, res) => {
 
   const { params, handler } = routeMatcher(method, apiUrl);
 
-  console.log("handler", handler);
-
   if (handler) {
     await handler(req, res, params);
   } else {
