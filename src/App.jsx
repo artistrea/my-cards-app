@@ -1,12 +1,12 @@
 import { useCards } from "./useCards";
 
 function App() {
-  const { cards, loading, addCard } = useCards();
+  const { cards, loading, addCard, deleteCard } = useCards();
 
-  function handleCreateCard(event) {
-    event.preventDefault();
+  function handleCreateCard(e) {
+    e.preventDefault();
 
-    const description = event.target.elements.description.value;
+    const description = e.target.elements.description.value;
 
     const newCard = {
       description,
@@ -28,10 +28,10 @@ function App() {
               <button
                 className="bg-slate-500 border-solid border-x-2 border-slate-200 rounded-md p-2"
                 onClick={() => {
-                  setCards(cards.filter((c) => c.id !== card.id));
+                  deleteCard(card.id);
                 }}
               >
-                Done
+                Delete
               </button>
             </li>
           ))}

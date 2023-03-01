@@ -36,9 +36,34 @@ class CardsController {
     };
 
     this.cards.push(card);
-    fs.writeFileSync(cardsPath, JSON.stringify(this.cards));
+    this.saveCards();
 
     res.json(card).status(201);
+  };
+
+  deleteCard = (req, res, params) => {
+    if (req.method !== "DELETE") {
+      res.status(405).json({ message: "Method not allowed" });
+      return;
+    }
+
+    const cardId = Number(params.id);
+
+    const newCards = this.cards.filter((card) => card.id !== cardId);
+
+    if (newCards.length === this.cards.length) {
+      res.status(404).json({ message: "Card not found" });
+      return;
+    }
+
+    this.cards = newCards;
+    this.saveCards();
+
+    res.status(204).end();
+  };
+
+  saveCards = () => {
+    fs.writeFileSync(cardsPath, JSON.stringify(this.cards));
   };
 }
 

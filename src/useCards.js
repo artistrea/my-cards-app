@@ -14,7 +14,7 @@ export const useCards = () => {
     })();
   }, []);
 
-  const addCard = (newCard) => {
+  function addCard(newCard) {
     fetch(`${API_URL}/cards`, {
       method: "POST",
       headers: {
@@ -26,7 +26,15 @@ export const useCards = () => {
       .then((data) => {
         setCards([...cards, data]);
       });
-  };
+  }
 
-  return { cards, loading, addCard };
+  function deleteCard(id) {
+    fetch(`${API_URL}/cards/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setCards(cards.filter((card) => card.id !== id));
+    });
+  }
+
+  return { cards, loading, addCard, deleteCard };
 };

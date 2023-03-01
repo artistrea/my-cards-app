@@ -1,25 +1,16 @@
-import { CardsController } from "./controllers/cardsController.js";
-
-const cardsController = new CardsController();
-
-const requestHandlers = {
-  GET: {
-    "/cards": cardsController.getCards,
-  },
-  POST: {
-    "/cards": cardsController.createCard,
-  },
-};
+import { routeMatcher } from "./routes/routeMatcher.js";
 
 export const handleApiRequest = async (req, res) => {
   const { method, originalUrl } = req;
 
-  const apiRoute = originalUrl.replace("/api/", "/");
+  const apiUrl = originalUrl.replace("/api/", "/");
 
-  const handler = requestHandlers[method][apiRoute];
+  const { params, handler } = routeMatcher(method, apiUrl);
+
+  console.log("handler", handler);
 
   if (handler) {
-    await handler(req, res);
+    await handler(req, res, params);
   } else {
     res.status(404).json({ message: "Route Not found" });
   }
