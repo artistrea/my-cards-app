@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import { API_URL } from "./API_URL";
 
 const cardsAtom = atom([]);
+const passwordAtom = atom("");
 
 export const useCards = () => {
   const [cards, setCards] = useAtom(cardsAtom);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useAtom(passwordAtom);
   const [loading, setLoading] = useState(true);
 
   const commonHeaders = {
@@ -15,12 +16,16 @@ export const useCards = () => {
   };
 
   useEffect(() => {
-    (async function () {
+    if (cards.length > 0) {
+      return;
+    }
+    async function fetchCards() {
       const data = await fetch(`${API_URL}/cards`).then((res) => res.json());
 
       setCards(data);
       setLoading(false);
-    })();
+    }
+    fetchCards();
   }, []);
 
   function addCard(newCard) {
@@ -52,8 +57,6 @@ export const useCards = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-
         setCards((cards) =>
           cards.map((card) => {
             if (card.id === data.id) {

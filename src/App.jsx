@@ -4,11 +4,12 @@ import { Card } from "./components/Card";
 import { PasswordInput } from "./components/PasswordInput";
 import { RadioInput } from "./components/RadioInput";
 import { useCards } from "./useCards";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 function App() {
   const { cards, loading, addCard } = useCards();
   const [selectedPriority, setSelectedPriority] = useState("");
-  console.log("rerendered");
+  const [animatedElementRef] = useAutoAnimate();
 
   const shownCards = cards.filter((card) => {
     return selectedPriority === "" || card.priority === selectedPriority;
@@ -31,7 +32,11 @@ function App() {
   return (
     <div className="bg-neutral-700 w-full min-h-screen text-neutral-100 flex flex-col">
       <div className="flex flex-wrap justify-around mx-auto w-full xl:w-3/6">
-        <span className="text-gray-400 flex">
+        <span
+          className={`text-gray-400 flex p-2 ${
+            selectedPriority === "" && "bg-slate-900"
+          }`}
+        >
           <RadioInput
             onChange={(e) => setSelectedPriority(e.target.value)}
             type="radio"
@@ -43,7 +48,11 @@ function App() {
           </RadioInput>
           <label htmlFor="Not Important">Not Important</label>
         </span>
-        <span className="text-yellow-400 flex">
+        <span
+          className={`text-yellow-400 flex p-2 ${
+            selectedPriority === "Important" && "bg-slate-900"
+          }`}
+        >
           <RadioInput
             onChange={(e) => setSelectedPriority(e.target.value)}
             type="radio"
@@ -57,7 +66,10 @@ function App() {
         </span>
       </div>
       <div className="mx-auto w-full xl:w-3/6">
-        <ul className="flex flex-col gap-2 bg-stone-800 p-10">
+        <ul
+          ref={animatedElementRef}
+          className="flex flex-col gap-2 bg-stone-800 p-10"
+        >
           {loading && <p>Carregando...</p>}
 
           {shownCards.map((card) => (

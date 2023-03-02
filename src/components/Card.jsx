@@ -21,7 +21,6 @@ export const Card = ({ card: originalCard }) => {
     setCard({ ...card, [propName]: value });
 
     timeoutRef.current = setTimeout(() => {
-      console.log("Atualizando card", card.id);
       updateCard({ ...card, [propName]: value });
     }, 1000);
   }
