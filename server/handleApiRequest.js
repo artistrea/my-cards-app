@@ -22,9 +22,6 @@ export const handleApiRequest = async (req, res) => {
 };
 
 function authorized(passwordHeader) {
-  console.log("passwordHeader", passwordHeader);
-  console.log("process.env.PASSWORD", process.env.PASSWORD);
-
   if (process.env.PASSWORD) {
     return passwordHeader === process.env.PASSWORD;
   }
