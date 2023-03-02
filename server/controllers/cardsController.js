@@ -33,6 +33,7 @@ class CardsController {
     const card = {
       id: Date.now(),
       description: req.body.description,
+      priority: "",
     };
 
     this.cards.push(card);
@@ -60,6 +61,39 @@ class CardsController {
     this.saveCards();
 
     res.status(204).end();
+  };
+
+  updateCard = (req, res, params) => {
+    if (req.method !== "PUT") {
+      res.status(405).json({ message: "Method not allowed" });
+      return;
+    }
+
+    const cardId = Number(params.id);
+
+    const card = this.cards.find((card) => card.id === cardId);
+
+    if (!card) {
+      res.status(404).json({ message: "Card not found" });
+      return;
+    }
+
+    const updatedCard = {
+      ...card,
+      description: req.body.description,
+      priority: req.body.priority,
+    };
+
+    this.cards = this.cards.map((card) => {
+      if (card.id === cardId) {
+        return updatedCard;
+      }
+      return card;
+    });
+
+    this.saveCards();
+
+    res.json(updatedCard).status(200);
   };
 
   saveCards = () => {

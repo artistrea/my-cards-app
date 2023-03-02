@@ -14,4 +14,9 @@ export const routes = {
       ":id": cardsController.deleteCard,
     },
   },
+  PUT: {
+    cards: {
+      ":id": cardsController.updateCard,
+    },
+  },
 };

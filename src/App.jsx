@@ -1,7 +1,20 @@
+import { BookmarkMinus, BookmarkPlus } from "lucide-react";
+import { useRef, useState } from "react";
+import { Card } from "./components/Card";
+import { PasswordInput } from "./components/PasswordInput";
+import { RadioInput } from "./components/RadioInput";
 import { useCards } from "./useCards";
 
 function App() {
-  const { cards, loading, addCard, deleteCard } = useCards();
+  const { cards, loading, addCard } = useCards();
+  const [selectedPriority, setSelectedPriority] = useState("");
+  console.log("rerendered");
+
+  const shownCards = cards.filter((card) => {
+    return selectedPriority === "" || card.priority === selectedPriority;
+  });
+
+  const timeoutRef = useRef();
 
   function handleCreateCard(e) {
     e.preventDefault();
@@ -16,30 +29,47 @@ function App() {
   }
 
   return (
-    <div className="bg-neutral-700 w-full min-h-screen text-neutral-100">
+    <div className="bg-neutral-700 w-full min-h-screen text-neutral-100 flex flex-col">
+      <div className="flex flex-wrap justify-around mx-auto w-full xl:w-3/6">
+        <span className="text-gray-400 flex">
+          <RadioInput
+            onChange={(e) => setSelectedPriority(e.target.value)}
+            type="radio"
+            name="selectedPriority"
+            value=""
+            id="Not Important"
+          >
+            <BookmarkMinus />
+          </RadioInput>
+          <label htmlFor="Not Important">Not Important</label>
+        </span>
+        <span className="text-yellow-400 flex">
+          <RadioInput
+            onChange={(e) => setSelectedPriority(e.target.value)}
+            type="radio"
+            name="selectedPriority"
+            value="Important"
+            id="important"
+          >
+            <BookmarkPlus />
+          </RadioInput>
+          <label htmlFor="important">Important</label>
+        </span>
+      </div>
       <div className="mx-auto w-full xl:w-3/6">
         <ul className="flex flex-col gap-2 bg-stone-800 p-10">
           {loading && <p>Carregando...</p>}
 
-          {cards.map((card) => (
-            <li key={card.id} className="flex">
-              <p className="flex-1 whitespace-pre-line">{card.description}</p>
-
-              <button
-                className="bg-slate-500 border-solid border-x-2 border-slate-200 rounded-md p-2"
-                onClick={() => {
-                  deleteCard(card.id);
-                }}
-              >
-                Delete
-              </button>
+          {shownCards.map((card) => (
+            <li key={card.id}>
+              <Card card={card} />
             </li>
           ))}
         </ul>
 
         <form
           onSubmit={handleCreateCard}
-          className="flex justify-around items-center"
+          className="flex justify-around items-center flex-wrap"
         >
           <label className="flex items-center" htmlFor="description">
             Description:
@@ -57,6 +87,9 @@ function App() {
             Criar
           </button>
         </form>
+      </div>
+      <div className="ml-auto mt-auto">
+        <PasswordInput />
       </div>
     </div>
   );
