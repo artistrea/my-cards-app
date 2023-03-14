@@ -46,7 +46,6 @@ function App() {
           >
             <BookmarkMinus />
           </RadioInput>
-          <label htmlFor="Not Important">Not Important</label>
         </span>
         <span
           className={`text-yellow-400 flex p-2 ${
@@ -62,7 +61,6 @@ function App() {
           >
             <BookmarkPlus />
           </RadioInput>
-          <label htmlFor="important">Important</label>
         </span>
       </div>
       <div className="mx-auto w-full xl:w-3/6">
