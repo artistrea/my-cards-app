@@ -9,6 +9,7 @@
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.jsx",
     "preview": "vite preview",
+    "start": "NODE_ENV=production node server",
     "serve": "NODE_ENV=production node server"
   },
   "dependencies": {
