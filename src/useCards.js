@@ -20,7 +20,7 @@ export const useCards = () => {
       return;
     }
     async function fetchCards() {
-      const data = await fetch(`${API_URL}/cards`).then((res) => res.json());
+      const data = await fetch(`${API_URL}/cards`).then((res) => res.json()).catch(alert)
 
       setCards(data);
       setLoading(false);
